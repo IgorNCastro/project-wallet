@@ -1,12 +1,12 @@
 export const USER_ACTION = 'USER_ACTION';
 export const WALLET_ACTION = 'WALLET_ACTION';
 
-export const updatePersonal = (state) => ({
+export const updateEmail = (state) => ({
   type: USER_ACTION,
-  ...state,
+  email: state,
 });
 
-export const updateProfessional = (state) => ({
+export const updateWallet = (state) => ({
   type: WALLET_ACTION,
   ...state,
 });

@@ -1,5 +1,4 @@
-// IMPORT ACTIONS
-// import { USER_ACTION } from '../actions/action';
+import { USER_ACTION } from '../actions/index';
 
 export const INITIAL_STATE_USER = {
   email: '',

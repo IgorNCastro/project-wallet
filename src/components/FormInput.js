@@ -1,14 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { fetchCurrency } from '../actions/index';
 
 class FormInput extends React.Component {
   constructor(props) {
     super(props);
     this.onFormChange = this.onFormChange.bind(this);
+    this.onFormButtonClick = this.onFormButtonClick.bind(this);
+    this.sendInfoToWallet = this.sendInfoToWallet.bind(this);
     this.state = {
-      spendValue: '',
+      id: 0,
+      value: '',
       description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
     };
   }
 
@@ -17,21 +24,47 @@ class FormInput extends React.Component {
     this.setState({ [name]: value });
   }
 
+  async onFormButtonClick(e) {
+    e.preventDefault();
+    const { dispatch } = this.props;
+    const { value, currency } = this.state;
+    await dispatch(fetchCurrency(this.state));
+    this.sendInfoToWallet(value, currency);
+    this.setState((prevState) => ({
+      id: prevState.id + 1,
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: '',
+      tag: '',
+    }));
+  }
+
+  sendInfoToWallet(value, currency) {
+    const NEAGTIVE_ONE = -1;
+    const { updateTotalField, prevExpenses } = this.props;
+    const findAtualCurrency = prevExpenses
+      .slice(NEAGTIVE_ONE)
+      .map((item) => item.exchangeRates[currency].ask);
+    const finalValue = (value * (Number(findAtualCurrency)));
+    updateTotalField(finalValue);
+  }
+
   render() {
     const { coinsListed } = this.props;
-    const { spendValue, description } = this.state;
+    const { value, description } = this.state;
     const payMethod = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const categoryForm = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     return (
       <form>
-        <label htmlFor="spendValue">
+        <label htmlFor="value">
           Valor:
           <input
-            id="spendValue"
+            id="value"
             data-testid="value-input"
             type="number"
-            name="spendValue"
-            value={ spendValue }
+            name="value"
+            value={ value }
             onChange={ this.onFormChange }
           />
         </label>
@@ -70,12 +103,12 @@ class FormInput extends React.Component {
             ))}
           </select>
         </label>
-        <label htmlFor="category">
+        <label htmlFor="tag">
           Categoria:
           <select
-            id="category"
+            id="tag"
             data-testid="tag-input"
-            name="category"
+            name="tag"
             onChange={ this.onFormChange }
           >
             { categoryForm.map((each) => (
@@ -99,17 +132,28 @@ class FormInput extends React.Component {
             onChange={ this.onFormChange }
           />
         </label>
+        <button
+          type="submit"
+          name="button"
+          onClick={ this.onFormButtonClick }
+        >
+          Adicionar despesa
+        </button>
       </form>
     );
   }
 }
 
 FormInput.propTypes = {
-  coinsListed: PropTypes.arrayOf(PropTypes.string).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  coinsListed: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  prevExpenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  updateTotalField: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   coinsListed: state.wallet.currencies,
+  prevExpenses: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps)(FormInput);

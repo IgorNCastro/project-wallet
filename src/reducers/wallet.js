@@ -1,4 +1,4 @@
-import { WALLET_ACTION } from '../actions/index';
+import { WALLET_ACTION, FORM_ACTION } from '../actions/index';
 
 export const INITIAL_STATE_WALLET = {
   currencies: [],
@@ -10,8 +10,12 @@ export const wallet = (state = INITIAL_STATE_WALLET, action) => {
   case WALLET_ACTION:
     return {
       ...state,
-      currencies: action.currencies,
-      expenses: action.expenses,
+      currencies: [...action.payload],
+    };
+  case FORM_ACTION:
+    return {
+      ...state,
+      expenses: [...state.expenses, action.payload],
     };
   default:
     return state;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { updateExpensesAfterDelete } from '../actions/index';
 
 class Table extends React.Component {
   adjustCurrencyName = (name) => {
@@ -22,6 +23,17 @@ class Table extends React.Component {
   adjustExpenseTotal = (value, currency) => {
     const fixedExpenseTotal = Math.round((value * currency) * 100) / 100;
     return fixedExpenseTotal;
+  }
+
+  onDeleteButtonClick = async (e) => {
+    e.preventDefault();
+    const {
+      prevExpenses,
+      disUpdateExpensesAfterDelete,
+    } = this.props;
+    const updatedList = prevExpenses
+      .filter((expense) => expense.id !== Number(e.target.name));
+    await disUpdateExpensesAfterDelete(updatedList);
   }
 
   render() {
@@ -65,7 +77,16 @@ class Table extends React.Component {
                   ) }
                 </td>
                 <td>Real</td>
-                <td>Editar/Excluir</td>
+                <td>
+                  <button
+                    data-testid="delete-btn"
+                    type="submit"
+                    name={ expense.id }
+                    onClick={ this.onDeleteButtonClick }
+                  >
+                    Excluir
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -77,10 +98,15 @@ class Table extends React.Component {
 
 Table.propTypes = {
   prevExpenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  disUpdateExpensesAfterDelete: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   prevExpenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps = (dispatch) => ({
+  disUpdateExpensesAfterDelete: (state) => dispatch(updateExpensesAfterDelete(state)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);

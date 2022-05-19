@@ -10,7 +10,6 @@ class Wallet extends React.Component {
     super(props);
     this.updateTotalField = this.updateTotalField.bind(this);
     this.state = {
-      totalField: 0,
       atualCurrency: 'BRL',
     };
   }
@@ -20,24 +19,26 @@ class Wallet extends React.Component {
     dispatch(fetchCoins());
   }
 
-  updateTotalField(value) {
-    const { totalField } = this.state;
-    const finalValue = Math.floor((totalField + value) * 100) / 100;
-    this.setState({ totalField: finalValue });
+  updateTotalField() {
+    const { prevExpenses } = this.props;
+    const valueAdded = prevExpenses.reduce((acc, curr) => {
+      return acc + (curr.value * curr.exchangeRates[curr.currency].ask);
+    }, 0);
+    return Math.floor(valueAdded * 100) / 100;
   }
 
   render() {
     const { emailUser } = this.props;
-    const { totalField, atualCurrency } = this.state;
+    const { atualCurrency } = this.state;
     return (
       <main>
         <header>
           <h2>TrybeWallet</h2>
           <h4 data-testid="email-field">{ emailUser }</h4>
           <h4 data-testid="header-currency-field">{ atualCurrency }</h4>
-          <h4 data-testid="total-field">{ totalField }</h4>
+          <h4 data-testid="total-field">{ this.updateTotalField() }</h4>
         </header>
-        <FormInput updateTotalField={ this.updateTotalField } />
+        <FormInput />
         <Table />
       </main>
     );
@@ -47,10 +48,12 @@ class Wallet extends React.Component {
 Wallet.propTypes = {
   emailUser: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
+  prevExpenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   emailUser: state.user.email,
+  prevExpenses: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps)(Wallet);

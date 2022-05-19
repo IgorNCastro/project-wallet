@@ -1,6 +1,7 @@
 export const USER_ACTION = 'USER_ACTION';
 export const WALLET_ACTION = 'WALLET_ACTION';
 export const FORM_ACTION = 'FORM_ACTION';
+export const DELETE_ACTION = 'DELETE_ACTION';
 
 export const updateEmail = (state) => ({
   type: USER_ACTION,
@@ -18,6 +19,11 @@ export const updateExpenses = (state, exchange) => ({
     ...state,
     exchangeRates: exchange,
   },
+});
+
+export const updateExpensesAfterDelete = (state) => ({
+  type: DELETE_ACTION,
+  payload: state,
 });
 
 // Código extraido de https://masteringjs.io/tutorials/fundamentals/filter-key#:~:text=JavaScript%20objects%20don't%20have,()%20function%20as%20shown%20below.

@@ -8,7 +8,6 @@ class FormInput extends React.Component {
     super(props);
     this.onFormChange = this.onFormChange.bind(this);
     this.onFormButtonClick = this.onFormButtonClick.bind(this);
-    this.sendInfoToWallet = this.sendInfoToWallet.bind(this);
     this.state = {
       id: 0,
       value: '',
@@ -27,9 +26,7 @@ class FormInput extends React.Component {
   async onFormButtonClick(e) {
     e.preventDefault();
     const { dispatch } = this.props;
-    const { value, currency } = this.state;
     await dispatch(fetchCurrency(this.state));
-    this.sendInfoToWallet(value, currency);
     this.setState((prevState) => ({
       id: prevState.id + 1,
       value: '',
@@ -38,16 +35,6 @@ class FormInput extends React.Component {
       method: '',
       tag: '',
     }));
-  }
-
-  sendInfoToWallet(value, currency) {
-    const NEAGTIVE_ONE = -1;
-    const { updateTotalField, prevExpenses } = this.props;
-    const findAtualCurrency = prevExpenses
-      .slice(NEAGTIVE_ONE)
-      .map((item) => item.exchangeRates[currency].ask);
-    const finalValue = (value * (Number(findAtualCurrency)));
-    updateTotalField(finalValue);
   }
 
   render() {
@@ -147,8 +134,6 @@ class FormInput extends React.Component {
 FormInput.propTypes = {
   dispatch: PropTypes.func.isRequired,
   coinsListed: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  prevExpenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  updateTotalField: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

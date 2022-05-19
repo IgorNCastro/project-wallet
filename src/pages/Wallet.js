@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchCoins } from '../actions/index';
 import FormInput from '../components/FormInput';
+import Table from '../components/Table';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class Wallet extends React.Component {
           <h4 data-testid="total-field">{ totalField }</h4>
         </header>
         <FormInput updateTotalField={ this.updateTotalField } />
+        <Table />
       </main>
     );
   }

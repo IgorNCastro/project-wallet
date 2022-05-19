@@ -21,9 +21,8 @@ class Wallet extends React.Component {
 
   updateTotalField() {
     const { prevExpenses } = this.props;
-    const valueAdded = prevExpenses.reduce((acc, curr) => {
-      return acc + (curr.value * curr.exchangeRates[curr.currency].ask);
-    }, 0);
+    const valueAdded = prevExpenses
+      .reduce((acc, cur) => acc + (cur.value * cur.exchangeRates[cur.currency].ask), 0);
     return Math.floor(valueAdded * 100) / 100;
   }
 

@@ -38,7 +38,7 @@ class FormInput extends React.Component {
   }
 
   render() {
-    const { coinsListed } = this.props;
+    const { coinsListed, isEditing, endEditClick } = this.props;
     const { value, description } = this.state;
     const payMethod = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const categoryForm = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
@@ -59,6 +59,7 @@ class FormInput extends React.Component {
           Moeda
           <select
             id="currency"
+            data-testid="currency-input"
             name="currency"
             onChange={ this.onFormChange }
           >
@@ -119,13 +120,23 @@ class FormInput extends React.Component {
             onChange={ this.onFormChange }
           />
         </label>
-        <button
-          type="submit"
-          name="button"
-          onClick={ this.onFormButtonClick }
-        >
-          Adicionar despesa
-        </button>
+        { !isEditing ? (
+          <button
+            type="submit"
+            name="button"
+            onClick={ this.onFormButtonClick }
+          >
+            Adicionar despesa
+          </button>
+        ) : (
+          <button
+            type="submit"
+            name="button"
+            onClick={ (e) => endEditClick(e, this.state) }
+          >
+            Editar despesa
+          </button>
+        )}
       </form>
     );
   }
@@ -134,6 +145,8 @@ class FormInput extends React.Component {
 FormInput.propTypes = {
   dispatch: PropTypes.func.isRequired,
   coinsListed: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  isEditing: PropTypes.bool.isRequired,
+  endEditClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

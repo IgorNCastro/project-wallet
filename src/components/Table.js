@@ -16,7 +16,7 @@ class Table extends React.Component {
   }
 
   adjustCurrency = (value) => {
-    const fixedCurr = Math.round((value) * 100) / 100;
+    const fixedCurr = (Math.round((value) * 100) / 100).toFixed(2);
     return fixedCurr;
   }
 
@@ -37,7 +37,12 @@ class Table extends React.Component {
   }
 
   render() {
-    const { prevExpenses } = this.props;
+    const {
+      prevExpenses,
+      onEditButtonClick,
+      isEditing,
+    } = this.props;
+
     return (
       <section>
         <table>
@@ -78,6 +83,18 @@ class Table extends React.Component {
                 </td>
                 <td>Real</td>
                 <td>
+                  { !isEditing ? (
+                    <button
+                      data-testid="edit-btn"
+                      type="submit"
+                      name={ expense.id }
+                      onClick={ onEditButtonClick }
+                    >
+                      Editar despesa
+                    </button>
+                  ) : (
+                    <span />
+                  )}
                   <button
                     data-testid="delete-btn"
                     type="submit"
@@ -99,6 +116,8 @@ class Table extends React.Component {
 Table.propTypes = {
   prevExpenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   disUpdateExpensesAfterDelete: PropTypes.func.isRequired,
+  onEditButtonClick: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({

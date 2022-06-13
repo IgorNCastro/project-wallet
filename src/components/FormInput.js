@@ -43,21 +43,22 @@ class FormInput extends React.Component {
     const payMethod = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const categoryForm = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     return (
-      <form>
-        <label htmlFor="value">
-          Valor:
+      <form className="form-field">
+        <div>
+          <label className="" htmlFor="value"> Valor </label>
           <input
+            className="user-value-input"
             id="value"
-            data-testid="value-input"
             type="number"
+            data-testid="value-input"
             name="value"
             value={ value }
             onChange={ this.onFormChange }
           />
-        </label>
-        <label htmlFor="currency">
-          Moeda
+        </div>
+        <label htmlFor="currency" className=""> Moedas </label>
           <select
+            className="user-input"
             id="currency"
             data-testid="currency-input"
             name="currency"
@@ -72,10 +73,9 @@ class FormInput extends React.Component {
               </option>
             ))}
           </select>
-        </label>
-        <label htmlFor="method">
-          Método de pagamento:
+        <label htmlFor="method" className=""> Método de pagamento </label>
           <select
+            className="user-input"
             id="method"
             data-testid="method-input"
             name="method"
@@ -90,10 +90,9 @@ class FormInput extends React.Component {
               </option>
             ))}
           </select>
-        </label>
-        <label htmlFor="tag">
-          Categoria:
+        <label htmlFor="tag" className=""> Categoria </label>
           <select
+            className="user-input"
             id="tag"
             data-testid="tag-input"
             name="tag"
@@ -108,23 +107,24 @@ class FormInput extends React.Component {
               </option>
             ))}
           </select>
-        </label>
-        <label htmlFor="description">
-          Descrição:
+        <div className="">
+          <label className="" htmlFor="description"> Descrição </label>
           <input
+            className="user-desc-input"
             id="description"
-            data-testid="description-input"
             type="text"
+            data-testid="description-input"
             name="description"
             value={ description }
             onChange={ this.onFormChange }
           />
-        </label>
+        </div>
         { !isEditing ? (
           <button
             type="submit"
             name="button"
             onClick={ this.onFormButtonClick }
+            className="add-edit-button"
           >
             Adicionar despesa
           </button>
@@ -133,6 +133,7 @@ class FormInput extends React.Component {
             type="submit"
             name="button"
             onClick={ (e) => endEditClick(e, this.state) }
+            className="add-edit-button"
           >
             Editar despesa
           </button>

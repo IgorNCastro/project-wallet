@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { updateExpensesAfterDelete } from '../actions/index';
+import '../index.css';
 
 class Table extends React.Component {
   adjustCurrencyName = (name) => {
@@ -44,10 +45,10 @@ class Table extends React.Component {
     } = this.props;
 
     return (
-      <section>
-        <table>
-          <thead>
-            <tr>
+      <section className="">
+        <table className="table-wallet">
+          <thead className="">
+            <tr className="table-row">
               <th>Descrição</th>
               <th>Tag</th>
               <th>Método de pagamento</th>
@@ -61,7 +62,7 @@ class Table extends React.Component {
           </thead>
           <tbody>
             {prevExpenses.map((expense) => (
-              <tr key={ expense.id }>
+              <tr key={ expense.id } className="table-row">
                 <td>{ expense.description }</td>
                 <td>{ expense.tag }</td>
                 <td>{ expense.method }</td>
@@ -89,6 +90,7 @@ class Table extends React.Component {
                       type="submit"
                       name={ expense.id }
                       onClick={ onEditButtonClick }
+                      className="button-edit"
                     >
                       Editar despesa
                     </button>
@@ -100,6 +102,7 @@ class Table extends React.Component {
                     type="submit"
                     name={ expense.id }
                     onClick={ this.onDeleteButtonClick }
+                    className="button-delete"
                   >
                     Excluir
                   </button>

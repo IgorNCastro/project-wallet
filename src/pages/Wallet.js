@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import FormInput from '../components/FormInput';
 import Table from '../components/Table';
 import { fetchCoins, updateExpensesAfterDelete } from '../actions/index';
+import '../index.css';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -63,11 +64,13 @@ class Wallet extends React.Component {
     const { atualCurrency, isEditing, whoIsEditing, timesUpdated } = this.state;
     return (
       <main>
-        <header>
-          <h2>TrybeWallet</h2>
-          <h4 data-testid="email-field">{ emailUser }</h4>
-          <h4 data-testid="header-currency-field">{ atualCurrency }</h4>
-          <h4 data-testid="total-field">{ this.updateTotalField() }</h4>
+        <header className="header-class">
+          <h1>WALLET</h1>
+          <h3 data-testid="email-field">{ emailUser }</h3>
+          <div className="header-value">
+            <h3 data-testid="header-currency-field">{ atualCurrency }:</h3>
+            <h3 data-testid="total-field">{ this.updateTotalField() }</h3>
+          </div>
         </header>
         <FormInput
           isEditing={ isEditing }

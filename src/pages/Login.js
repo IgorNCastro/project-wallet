@@ -23,32 +23,40 @@ class Login extends React.Component {
     } = this.props;
 
     return (
-      <section>
-        <input
-          data-testid="email-input"
-          type="email"
-          name="emailInput"
-          placeholder="Email"
-          value={ emailInput }
-          onChange={ onInputChange }
-        />
-        <input
-          data-testid="password-input"
-          type="password"
-          name="passwordInput"
-          placeholder="Password"
-          value={ passwordInput }
-          onChange={ onInputChange }
-        />
-        <button
-          type="submit"
-          name="button"
-          disabled={ isLoginDisabled }
-          onClick={ this.onButtonClick }
-        >
-          Entrar
-        </button>
-      </section>
+      <div className="login-section">
+        <section className="login-input">
+          <h2>
+            Welcome to Wallet
+          </h2>
+          <input
+            data-testid="email-input"
+            type="email"
+            name="emailInput"
+            placeholder="Email"
+            value={ emailInput }
+            onChange={ onInputChange }
+            className="input-login-box"
+          />
+          <input
+            data-testid="password-input"
+            type="password"
+            name="passwordInput"
+            placeholder="Password"
+            value={ passwordInput }
+            onChange={ onInputChange }
+            className="input-login-box"
+          />
+          <button
+            type="submit"
+            name="button"
+            disabled={ isLoginDisabled }
+            onClick={ this.onButtonClick }
+            className="login-button"
+          >
+            Entrar
+          </button>
+        </section>
+      </div>
     );
   }
 }
